@@ -34,7 +34,6 @@ def input_word(draw):
 def _validation(word, draw):
     """Validations: 1) only use letters of draw, 2) valid dictionary word"""
     if word in DICTIONARY:
-        print("inside")
         # process and sort
         word = list(word.upper())
         word.sort()
@@ -49,7 +48,8 @@ def _validation(word, draw):
                 if j == len(word): # if end of word, return True
                     return True
                 continue
-    return False
+    else:
+        raise ValueError("Not valid entry.")
 
 # while (_validation('weave',['v','e','e','w','a','o','s']))
 
@@ -68,20 +68,27 @@ def get_possible_dict_words(draw):
     """Get all possible words from draw which are valid dictionary words.
     Use the _get_permutations_draw helper and DICTIONARY constant"""
     possible_words = _get_permutations_draw(draw)
+    '''new_list =[]
     for word in possible_words:
         if word in DICTIONARY:
-            print('yay')
-    return possible_words
+            new_list.append(word)
+    print(new_list)
+    return(new_list)'''
+    return(set(possible_words) & set(DICTIONARY)) # intersection
 
 
 
 def _get_permutations_draw(draw):
     """Helper for get_possible_dict_words to get all permutations of draw letters.
     Hint: use itertools.permutations"""
-    perm_list = list(itertools.permutations(draw))
+    perm_list = []
+    for i in range(1,len(draw)+1):
+        for permutation in list(itertools.permutations(draw,i)):
+            perm_list.append(permutation)
     new_list = []
     for word in perm_list:
-        new_list.append(''.join(word).lower())
+        word = ''.join(word).lower()
+        new_list.append(word)
     return new_list
 
 
